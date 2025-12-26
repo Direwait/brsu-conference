@@ -1,0 +1,58 @@
+<div class="form" id="reg-form">
+    <div>
+        <p><b>Фамилия</b></p>
+        <p><input type="text" id="surname"></p>
+    </div>
+    <div>
+        <p><b>Имя</b></p>
+        <p><input type="text" id="name"></p>
+    </div>
+    <div>
+        <p><b>Отчество</b></p>
+        <p><input type="text" id="fathername"></p>
+    </div>
+    <div>
+        <p><b>Учёная степень</b></p>
+        <p>
+            <select name="degree" class="reg-select" id="select-degree">
+                <option selected disabled hidden value="">Выберите учёную степень</option>
+                <option value="candidate">Кандидат наук</option>
+                <option value="doctor">Доктор наук</option>
+                <option value="none">Нет</option>
+            </select>
+        </p>
+    </div>
+    <div>
+        <p><b>Учёное звание</b></p>
+        <p>
+            <select name="title" class="reg-select" id="select-title">
+                <option selected disabled hidden value="">Выберите учёное звание</option>
+                <option value="docent">Доцент</option>
+                <option value="professor">Профессор</option>
+                <option value="none">Нет</option>
+            </select>
+        </p>
+    </div>
+    <div>
+        <p><b>Место работы и его адрес</b></p>
+        <p><input type="text" id="place-of-work"></p>
+    </div>
+    <div>
+        <p><b>Должность</b></p>
+        <p><input type="text" id="job-title"></p>
+    </div>
+    <div>
+        <p><b>Электронная почта</b></p>
+        <p><input type="text" id="email"></p>
+    </div>
+    <div>
+        <p><b>Пароль</b></p>
+        <p><input type="password" id="password"></p>
+    </div>
+    <div>
+        <p><b>Подтверждение пароля</b></p>
+        <p><input type="password" id="repeat-password"></p>
+    </div>
+    <input class="form-button" id="reg-button" type="button" onclick="registration()" value="Зарегистрироваться">
+</div>
+<div class="message hidden"></div>
