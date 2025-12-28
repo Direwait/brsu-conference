@@ -1,12 +1,9 @@
 body {
-
     background: linear-gradient(to right, #0b3847, #95082b);
     margin: 0;
-    height: 100vh;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     text-decoration-skip-ink: none;
 }
-
 
 body::-webkit-scrollbar {
     display: none;
