@@ -1,0 +1,113 @@
+<div class="form-request">
+    <h2>Добавление новой заявки</h2><br>
+    <div class="form-add-request">
+        <label> Потребность в жилье        
+            <input id="housing_need" type="checkbox">        
+        </label>
+        <br>
+
+        <div class="form-add-report">
+            <label>Название доклада:</label>
+            <input id="report_title">
+            <br>
+
+            <label>Авторы:</label>
+            <input id="report_authors" placeholder="Иванов Антон Иванович ...">
+            <br>
+
+            
+            <label>Формы доклада:</label>
+            <select id="report_form">
+                 <option value="offline">Очное</option>
+                 <option value="online">Онлайн</option>
+            </select>
+            <br>
+
+            <label>Научное направление:</label>
+            <input id="scientific_direction">
+            <br>
+
+            <input id="report_file" type="file">
+            <button style="background-color: red;" onclick="deleteReport()">Удалить доклад</button>
+        </div>
+
+            <button onclick="addReport()">Добавить доклад</button>
+            <button style="background-color: rgb(53, 102, 95);" >Добавить заявку</button>
+    </div>
+</div>
+<br>
+
+<div class="request-list">
+    
+    <div class="request-item">
+       <ul>
+            <li> Потребность в жилье? да/нет</li>
+            <li>СТАТУС ЗАЯВКИ (/ принято / отклонено)</li>
+            <button class="request-delete-btn">УДАЛИТЬ ЗАЯВКУ</button>
+        </ul>
+        <br>
+        <div class="report-item">
+            <div>id. 1</div>
+            <div>Название доклада</div> 
+            <div>Авторы</div>
+            <div>Формат выступления</div> 
+            <div>Научное направление</div> 
+            <div>файл</div>
+        </div>
+
+        <br>
+        <div class="report-item">
+            <div>id. 1</div>
+            <div>Название доклада</div> 
+            <div>Авторы</div>
+            <div>Формат выступления</div> 
+            <div>Научное направление</div> 
+            <div>файл</div>
+        </div>
+
+        <br>
+        <div class="report-item">
+            <div>id. 1</div>
+            <div>Название доклада</div> 
+            <div>Авторы</div>
+            <div>Формат выступления</div> 
+            <div>Научное направление</div> 
+            <div>файл</div>
+        </div>
+    </div> 
+
+
+    <div class="request-item">
+        <ul>
+            <li> Потребность в жилье? да/нет</li>
+            <li>СТАТУС ЗАЯВКИ (/ принято / отклонено)</li>
+            <button class="request-delete-btn">УДАЛИТЬ ЗАЯВКУ</button>
+        </ul>
+        <br>
+        <div class="report-item">
+            <div>id. 1</div>
+            <div>Название доклада</div> 
+            <div>Авторы</div>
+            <div>Формат выступления</div> 
+            <div>Научное направление</div> 
+            <div>файл</div>
+        </div>
+    </div>
+    
+    <div class="request-item">
+       <ul>
+            <li> Потребность в жилье? да/нет</li>
+            <li>СТАТУС ЗАЯВКИ (/ принято / отклонено)</li>
+            <button class="request-delete-btn">УДАЛИТЬ ЗАЯВКУ</button>
+        </ul>
+       <br>
+      <div class="report-item">
+            <div>id. 1</div>
+            <div>Название доклада</div> 
+            <div>Авторы</div>
+            <div>Формат выступления</div> 
+            <div>Научное направление</div> 
+            <div>файл</div>
+        </div>
+    </div>
+</div> 

@@ -1,0 +1,50 @@
+.form-add-request, .form-add-report, .form-request {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-add-request {
+    width: 55%;
+}
+.form-request {
+    align-items: center;
+}
+
+
+.request-list {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    align-self: auto;
+    flex-wrap: wrap;
+    flex-grow: 0px;
+    min-width: 300px;
+    background-color: rgba(221, 11, 11, 0.1);
+    border: 2px solid;
+    
+}
+
+.request-item {
+    background-color: blueviolet;
+    flex-basis: 220px ;
+    position: relative;
+    padding: 0px 0px 0px 0px;
+    margin: 20px 20px 20px 10px; 
+    min-width: 200px;
+}
+
+.request-delete-btn {
+    background-color: red;
+    position: relative;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0 0 0 0;
+    width: 7px;
+    height: 8px;
+    font-size: 8px;
+}
+
+.report-item div {  
+    background-color: aquamarine;
+}

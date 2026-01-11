@@ -189,6 +189,7 @@ function login() {
             accessToken: data.accessToken,
             user: data.user
         }))));
+    
         location.reload();
     });
 }
