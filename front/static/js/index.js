@@ -1,7 +1,8 @@
 const {fetch: originalFetch} = window, 
 
 functions = {
-    'profile.html': profile,
+    'front/page/profile.html': profile,
+    'front/page/personal-requests.html': renderAllRequests
 },
 
 degrees = {
@@ -277,5 +278,124 @@ function registration() {
         location.reload();
     });
 }
-calculateDays();
-setInterval(calculateDays, 1000);
+// calculateDays();
+// setInterval(calculateDays, 1000);
+
+async function getAllRequestByUser() {
+    try {
+        const userId = JSON.parse(decodeURIComponent(atob(localStorage.getItem('conf_data')))).user.id;
+        const response = await fetch(`http://localhost:8888/requests/get-personal/${userId}`, {
+            method: `GET`,
+            headers: {
+            'content-type': 'application/json',
+            'withToken': true      
+            }
+        });
+        const listOfRequestwithReports = await response.json();
+        return listOfRequestwithReports;
+    } catch (error) {
+        console.error("Ошибка с получениям списка заявок пользователя", error);
+    }
+}
+
+
+function parseToRequestWithReports(requestsList) {
+    if (!Array.isArray(requestsList)) {
+        throw new Error(`RequestList должен быть массив объектов`)
+    }
+    return requestsList.map(
+        (item, index) => {
+                return new RequestCardWithReports(item);
+    })
+}
+
+class RequestCardWithReports {
+    constructor(requestData) {
+        this.requestId = requestData.request.id;
+        this.housingNeed = requestData.request.housing_need;
+        this.requestStatus = requestData.request.status || `pending`;
+        this.reports = requestData.reports || [];
+    }
+}
+
+
+async function renderAllRequests() {
+
+    try {
+        console.log("gjckt в try")
+        
+        const rawData = await getAllRequestByUser();
+        console.log(rawData)
+        
+        const requestCards = parseToRequestWithReports(rawData);
+        console.log(requestCards)
+        
+        // 3. Рендерим HTML
+        const html = requestCards.map(card => renderRequestItem(card)).join('');
+        console.log(html);
+
+        // 4. Вставляем в DOM problmer place
+        const container = document.querySelector('.request-list');
+        if (container) {
+            container.innerHTML = html;
+        }
+        
+        // 5. (Опционально) Назначаем обработчики на кнопки удаления
+        document.querySelectorAll('.request-delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const requestId = this.dataset.id;
+                console.log('Удалить заявку:', requestId);
+                // Здесь можно добавить вызов API для удаления
+            });
+        });
+        
+    } catch (error) {
+        console.error('Ошибка рендера:', error);
+    }
+}
+
+function renderRequestItem(requestCards) {
+    const hasReports = requestCards.requestReports && 
+                       Array.isArray(requestCards.requestReports) && 
+                       requestCards.reports.length > 0;
+
+    return `
+        <div class="request-item" data-id="${requestCards.requestId}">
+            <ul class="request-info">
+                <li>Потребность в жилье? ${requestCards.housingNeed === 1 ? '✅ Да' : '❌ Нет'}</li>
+                <li>Статус заявки: ${requestCards.requestStatus}"</li>
+                <li>
+                    <button class="request-delete-btn" data-id="${requestCards.requestId}">
+                        Удалить
+                    </button>
+                </li>
+            </ul>            
+                ${renderReports(requestCards.reports)}
+        </div>
+    `;
+}
+
+function renderReports(reportsArray) {
+    if (!reportsArray || !Array.isArray(reportsArray) || reportsArray.length === 0) {
+        return '';
+    }
+    
+    return reportsArray.map((report, index) => `
+        <div class="report-item" data-report-id="${report.id || index}">
+            <div class="report-header">
+                <span class="report-number">Доклад #${index + 1}</span>
+                ${report.report_filename ? '<span class="has-file">📎 Есть файл</span>' : ''}
+            </div>
+            <div class="report-content">
+                <div><strong>Название: ${report.report_title || 'Без названия'}</div> 
+                <div><strong>Авторы:</strong> ${report.report_authors || 'Не указаны'}</div>
+                <div><strong>Формат:</strong> ${report.report_form || 'Не указан'}</div> 
+                <div><strong>Направление:</strong> ${report.scientific_direction}</div> 
+                ${report.report_filename 
+                    ? `<div><strong>Файл:</strong> <a href="../server/files/${report.report_filename}" target="_blank">Скачать</a></div>` 
+                    : ''
+                }
+            </div>
+        </div>
+    `).join('');
+}

@@ -35,6 +35,8 @@ class requestController {
 
     async insert(req, res, next) {
         try {
+            console.log('Received body:', req.body)
+            console.log(req.body)
             const {userID, housing_need} = req.body;
             const reports = JSON.parse(req.body.reports), files = req.files;
             const request = await requestService.insert(userID, housing_need);
