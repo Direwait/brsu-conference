@@ -1,8 +1,12 @@
+// import {parseToRequestWithReports } from './requestCard.js';
+
 const {fetch: originalFetch} = window, 
 
 functions = {
     'front/page/profile.html': profile,
-    'front/page/personal-requests.html': renderAllRequests
+    'front/page/personal-requests.html': renderAllRequests,
+    'front/page/department-requests.html': renderAllRequests,
+    'front/page/accepted-requests.html': renderAllRequests
 },
 
 degrees = {
@@ -83,6 +87,12 @@ window.fetch = async (...args) => {
 
 document.addEventListener('DOMContentLoaded', async () =>  {
     let userData = null;
+    
+    const savedPage = localStorage.getItem('lastPage');
+    if (savedPage !== 'front/page/registration.html' && savedPage !== 'front/page/login.html') {
+        changeContent(savedPage);
+    }
+    
     try {
         let data = localStorage.getItem('conf_data');
         if (!data) return;
@@ -139,6 +149,7 @@ function calculateDays() {
 }
 
 function changeContent(fileName) {
+    localStorage.setItem('lastPage', fileName);
     fetch(fileName, {headers: {'withToken': false}})
         .then(response => response.text())
         .then(data => {
@@ -278,8 +289,26 @@ function registration() {
         location.reload();
     });
 }
-// calculateDays();
-// setInterval(calculateDays, 1000);
+calculateDays();
+setInterval(calculateDays, 60*60*24*1000);
+
+async function updateRequestStatus(requestId, requestStatus) {
+    try {
+        const response = await fetch(`htpp://localhost:8888/request/${requestId}`, {
+            method: `PUT`,
+            headers: {
+                'content-type': 'application/json',
+                'withToken': true
+            },
+            body: {
+                'status': `${requestStatus}`
+            }
+        });
+        return response.ok;
+    } catch (error) {
+        console.error("Ошибка обновление статуса заявки по id")
+    }
+}
 
 async function getAllRequestByUser() {
     try {
@@ -298,7 +327,36 @@ async function getAllRequestByUser() {
     }
 }
 
+async function getAllRequestForAdmin() {
+    try {
+        const response = await fetch(`http://localhost:8888/requests/get-all`, {
+            method: `GET`,
+            headers: {
+            'content-type': 'application/json',
+            'withToken': true      
+            }
+        });
+        const listOfRequestwithReports = await response.json();
+        return listOfRequestwithReports;
+    } catch (error) {
+        console.error("Ошибка с получениям списка заявок пользователя", error);
+    }
+}
 
+async function deleteRequestById(requestId) {
+    try {
+        const response = await fetch(`http://localhost:8888/requests/remove/${requestId}`, {
+            method: `DELETE`,
+            headers: {
+            'content-type': 'application/json',
+            'withToken': true      
+            }
+        });
+        return response.ok;
+    } catch (error) {
+        console.error("Ошибка с удаленния заявки по id", error);
+    }
+}
 function parseToRequestWithReports(requestsList) {
     if (!Array.isArray(requestsList)) {
         throw new Error(`RequestList должен быть массив объектов`)
@@ -308,7 +366,6 @@ function parseToRequestWithReports(requestsList) {
                 return new RequestCardWithReports(item);
     })
 }
-
 class RequestCardWithReports {
     constructor(requestData) {
         this.requestId = requestData.request.id;
@@ -318,34 +375,25 @@ class RequestCardWithReports {
     }
 }
 
-
 async function renderAllRequests() {
 
     try {
         console.log("gjckt в try")
         
         const rawData = await getAllRequestByUser();
-        console.log(rawData)
-        
+        //else() const rawData = await getAllRequestForAdmin();
         const requestCards = parseToRequestWithReports(rawData);
-        console.log(requestCards)
-        
-        // 3. Рендерим HTML
         const html = requestCards.map(card => renderRequestItem(card)).join('');
-        console.log(html);
-
-        // 4. Вставляем в DOM problmer place
+        
         const container = document.querySelector('.request-list');
         if (container) {
             container.innerHTML = html;
         }
         
-        // 5. (Опционально) Назначаем обработчики на кнопки удаления
         document.querySelectorAll('.request-delete-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const requestId = this.dataset.id;
                 console.log('Удалить заявку:', requestId);
-                // Здесь можно добавить вызов API для удаления
             });
         });
         
@@ -359,16 +407,21 @@ function renderRequestItem(requestCards) {
                        Array.isArray(requestCards.requestReports) && 
                        requestCards.reports.length > 0;
 
+    if (requestCards.requestStatus = 'pending')
+        requestCards.requestStatus = 'В ожидании';
+    else if(requestCards.requestStatus = 'aproved') requestCards.requestStatus = 'Принята';
+    else requestCards.requestStatus = 'Отклонено';
+    
     return `
         <div class="request-item" data-id="${requestCards.requestId}">
             <ul class="request-info">
-                <li>Потребность в жилье? ${requestCards.housingNeed === 1 ? '✅ Да' : '❌ Нет'}</li>
-                <li>Статус заявки: ${requestCards.requestStatus}"</li>
-                <li>
-                    <button class="request-delete-btn" data-id="${requestCards.requestId}">
+                <div>Потребность в жилье? ${requestCards.housingNeed === 1 ? 'Да' : 'Нет'}</div>
+                <div>Статус: ${requestCards.requestStatus}</div>
+                <div>
+                    <button onclick="deleteRequestById('${requestCards.requestId}')" class="request-delete-btn" id="${requestCards.requestId}">
                         Удалить
                     </button>
-                </li>
+                </div>
             </ul>            
                 ${renderReports(requestCards.reports)}
         </div>
@@ -383,8 +436,7 @@ function renderReports(reportsArray) {
     return reportsArray.map((report, index) => `
         <div class="report-item" data-report-id="${report.id || index}">
             <div class="report-header">
-                <span class="report-number">Доклад #${index + 1}</span>
-                ${report.report_filename ? '<span class="has-file">📎 Есть файл</span>' : ''}
+                <span class="report-number">Доклад #${index + 1} 📎</span>
             </div>
             <div class="report-content">
                 <div><strong>Название: ${report.report_title || 'Без названия'}</div> 
@@ -392,10 +444,10 @@ function renderReports(reportsArray) {
                 <div><strong>Формат:</strong> ${report.report_form || 'Не указан'}</div> 
                 <div><strong>Направление:</strong> ${report.scientific_direction}</div> 
                 ${report.report_filename 
-                    ? `<div><strong>Файл:</strong> <a href="../server/files/${report.report_filename}" target="_blank">Скачать</a></div>` 
+                    ? `<div><strong>Файл:</strong> <a class="report-link" href="../server/files/${report.report_filename}" target="_blank">Скачать</a></div>` 
                     : ''
                 }
             </div>
-        </div>
+        </div><br>
     `).join('');
 }

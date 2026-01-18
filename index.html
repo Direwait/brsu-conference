@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Конференция</title>
     <link rel="stylesheet" href="front/static/css/index copy.css">
+    <link rel="stylesheet" href="front/static/css/top-basement.css">
     <link rel="stylesheet" href="front/static/css/request-report.css">
     <link rel="stylesheet" href="front/static/css/scrollbar.css">
     <link rel="stylesheet" href="front/static/css/buble.css">
@@ -15,43 +16,46 @@
 </head>
 
 <body>
-    <div class="top">
-        <div class="logo-container">
-            <img src="front/static/img/newlogo.png" alt="логотип">
+    <header>
+        <div class="top">
+            <div class="logo-container-left">
+                <img src="front/static/img/newlogo.png" alt="логотип">
+            </div>
+        <div class="title-container">
+            <h1 class="conference-title">Международная научно-практическая конференция
+                «Математическое моделирование и новые образовательные технологии в математике» </br> (24-26 апреля 2025
+                года)
+            </h1>
         </div>
-    <div class="title-container">
-        <h1 class="conference-title">Международная научно-практическая конференция
-            «Математическое моделирование и новые образовательные технологии в математике» </br> (24-26 апреля 2025
-            года)
-        </h1>
-    </div>
-        <div class="logo-container">
-            <img src="front/static/img/physm.png" alt="логотип">
+            <div class="logo-container-right">
+                <img src="front/static/img/physm.png" alt="логотип">
+            </div>
         </div>
-    </div>
+    </header>
+    
     <br>
-
-    <div class="menu">
-        <ul>
-            <li><a href="#" onclick="changeContent('front/page/about.html')">О КОНФЕРЕНЦИИ</a></li>
-            <li><a href="#" onclick="changeContent('front/page/materials.html')">МАТЕРИАЛЫ</a></li>
-            <li><a href="#" onclick="changeContent('front/page/organizers.html')">ОРГАНИЗАТОРЫ</a></li>
-            <li><a href="#" onclick="changeContent('front/page/participants.html')">УЧАСТНИКИ</a></li>
-            <li><a href="#" onclick="changeContent('front/page/program.html')">ПРОГРАММА</a></li>
-            <li><a href="#" onclick="changeContent('front/page/psvn.html')">ПЕРВЫЙ ШАГ В НАУКУ</a></li>
-            <li><a href="#" onclick="changeContent('front/page/galery.html')">ГАЛЕРЕЯ</a></li>
-            <li class="no-auth"><a href="#" onclick="changeContent('front/page/login.html')">АВТОРИЗАЦИЯ</a></li>
-            <li class="no-auth"><a href="#" onclick="changeContent('front/page/registration.html')">РЕГИСТРАЦИЯ</a></li>
-            <li class="#"><a href="#" onclick="changeContent('front/page/personal-requests.html')">ЛИЧНЫЕ ЗАЯВКИ</a></li>
-            <li class="admin hidden"><a href="#" onclick="changeContent('front/page/department-requests.html')">ЗАЯВКИ НА РАССМОТРЕНИИ</a></li>
-            <li class="admin hidden"><a href="#" onclick="changeContent('front/page/accepted-requests.html')">ПРИНЯТЫЕ ЗАЯВКИ</a></li>
-            <li class="auth hidden"><a href="#" onclick="changeContent('front/page/reports-history.html')">ИСТОРИЯ ДОКЛАДОВ</a></li>
-            <li class="auth hidden"><a href="#" onclick="changeContent('front/page/profile.html')">ПРОФИЛЬ</a></li>
-        </ul>
-    </div>
-
-    <div class="container"></div>
-
+<div style="color:red">До 25 апреля осталось: <span id="days">0</span> дней</div>
+    <nav>
+        <div class="menu">
+            <ul>
+                <li><a href="#" onclick="changeContent('front/page/about.html')">О КОНФЕРЕНЦИИ</a></li>
+                <li><a href="#" onclick="changeContent('front/page/materials.html')">МАТЕРИАЛЫ</a></li>
+                <li><a href="#" onclick="changeContent('front/page/organizers.html')">ОРГАНИЗАТОРЫ</a></li>
+                <li><a href="#" onclick="changeContent('front/page/participants.html')">УЧАСТНИКИ</a></li>
+                <li><a href="#" onclick="changeContent('front/page/program.html')">ПРОГРАММА</a></li>
+                <li><a href="#" onclick="changeContent('front/page/psvn.html')">ПЕРВЫЙ ШАГ В НАУКУ</a></li>
+                <li><a href="#" onclick="changeContent('front/page/galery.html')">ГАЛЕРЕЯ</a></li>
+                <li class="no-auth"><a href="#" onclick="changeContent('front/page/login.html')">АВТОРИЗАЦИЯ</a></li>
+                <li class="no-auth"><a href="#" onclick="changeContent('front/page/registration.html')">РЕГИСТРАЦИЯ</a></li>
+                <li class="auth hidden"><a href="#" onclick="changeContent('front/page/personal-requests.html')">ЛИЧНЫЕ ЗАЯВКИ</a></li>
+                <li class="admin hidden"><a href="#" onclick="changeContent('front/page/department-requests.html')">ЗАЯВКИ НА РАССМОТРЕНИИ</a></li>
+                <li class="admin hidden"><a href="#" onclick="changeContent('front/page/accepted-requests.html')">ПРИНЯТЫЕ ЗАЯВКИ</a></li>
+                <li class="auth hidden"><a href="#" onclick="changeContent('front/page/reports-history.html')">ИСТОРИЯ ДОКЛАДОВ</a></li>
+                <li class="auth hidden"><a href="#" onclick="changeContent('front/page/profile.html')">ПРОФИЛЬ</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main>
     <div class="content" id="content">
         <h2 rel="text-align: center;" style="text-align: center;">ОСНОВНАЯ ИНФОРМАЦИЯ</h2> <br>
         <p>Оргкомитет конференции приглашает принять участие в Международной научно-практической конференции
@@ -84,7 +88,7 @@
             материалов <strong>до 20.04.2025.</strong> </p>
         <p>4. Проведение конференции <strong>24-26.04.2025. </strong></p>
     </div>
-
+    </main>
     <!-- <div class="bottom buttons">
         <div style="font-weight: bold; margin-right: 5px;">До конференции осталось:</div>
         <div style="font-weight: bold; margin-right: 5px;"><span id="days"></span> д.</div>
@@ -93,7 +97,6 @@
         <a href="https://drive.google.com/drive/folders/1-xgXQAE-5Ljba5oWekTgt7UjY9fpMldl"><button class="raise">Шаблон
                 оформления материалов</button></a>
     </div> -->
-
     <script src="front/static/js/index.js"></script>
     <script src="front/static/js/reports.js"></script>
 </body>

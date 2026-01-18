@@ -1,15 +1,11 @@
 const { ServiceException } = require("@smithy/smithy-client");
 
-function deleteReport(){
-
-}
-
 function addReportForm(){
     const reportForm = document.querySelector(".form-add-report");
     const clonedForm = reportForm.cloneNode(true)
     
     const inputs = clonedForm.querySelectorAll('input','select')
-    .forEach(input => input.value = '');
+    .forEach(input => {input.value = ''; input.required = true;});
 
     const deleteBtn = clonedForm.querySelector('button[onclick="deleteReport()"]');
     deleteBtn.style.display = 'inline-block';
@@ -65,11 +61,4 @@ function addReport() {
             }
         return response.json();
     })
-    .then(data => {
-        
-        console.log(data);
-        // location.reload();
-    });
 }
-
-

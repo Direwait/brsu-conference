@@ -8,26 +8,26 @@
 
         <div class="form-add-report">
             <label>Название доклада:</label>
-            <input id="report_title">
+            <input autocomplete="off" id="report_title">
             <br>
 
             <label>Авторы:</label>
-            <input id="report_authors" placeholder="Иванов Антон Иванович ...">
+            <input autocomplete="off" id="report_authors" placeholder="Иванов Антон Иванович ...">
             <br>
 
             
             <label>Формы доклада:</label>
-            <select id="report_form">
+            <select autocomplete="off" id="report_form">
                  <option value="offline">Очное</option>
                  <option value="online">Онлайн</option>
             </select>
             <br>
 
             <label>Научное направление:</label>
-            <input id="scientific_direction">
+            <input autocomplete="off" id="scientific_direction">
             <br>
 
-            <input id="report_file" type="file">
+            <input required autocomplete="off" id="report_file" type="file">
             <br>
             <button style="background-color: red; display: none;" onclick="deleteReport()">Удалить доклад</button>
             <br>
@@ -37,7 +37,6 @@
     </div>
 </div>
 <br>
-<button onclick="getAllRequestByUser()"> ТЕСТОВАЯ КНОПКА</button>
 
 <div class="request-list">
     
