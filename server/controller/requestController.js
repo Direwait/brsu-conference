@@ -50,22 +50,6 @@ class requestController {
         }
     }
 
-    // async update(req, res, next) {
-    //     try {
-    //         const changes = JSON.parse(req.body.changes),
-    //             reports = JSON.parse(req.body.reports),
-    //             files = req.files;
-    //         const updatedRequest = await requestService.update(req.params.id, changes);
-    //         const updatedReports = [];
-    //         for (let i = 0; i < reports.length; i++)
-    //             await reportService.update(reports[i].id, reports[i].changes, reports[i].authors, files ? files[reports[i].id] : null);
-    //         updatedReports.push(...(await requestService.getOne(req.params.id)).reports);
-    //         res.json({request: updatedRequest, reports: updatedReports});
-    //     } catch (e) {
-    //         next(e)
-    //     }
-    // }
-
     async remove(req, res, next) {
         try {
             const id = req.params.id;

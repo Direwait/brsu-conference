@@ -5,22 +5,27 @@ const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const userRouter = require('./router/userRouter');
 const requestRouter = require('./router/requestRouter');
-const reportRouter = require('./router/reportRouter');
 const errorHadler = require('./middleware/errorHandler');
 const fileUpload = require('express-fileupload');
+const path = require('path');
+const fs = require('fs');
+const https = require('https');
 dotenv.config();
 
-app.use(cookieParser());
 app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
 app.use(cookieParser());
-// app.use(express.static('files'));
+app.use(express.static('files'));
 app.use(fileUpload({}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/requests', requestRouter);
-// app.use('/reports', reportRouter);
 app.use('/users', userRouter);
 app.use(errorHadler);
 
+const options = {
+    key: fs.readFileSync(path.resolve(process.env.KEY)),
+    cert: fs.readFileSync(path.resolve(process.env.CERT))
+}
 
-app.listen(process.env.PORT, () => console.log(`server started on port ${process.env.PORT}`));
+https.createServer(options, app)
+.listen(process.env.PORT, () => console.log(`server started on port ${process.env.PORT}`));
