@@ -47,7 +47,7 @@ function addReport() {
         reportData.append(`report${index + 1}`, fileInput.files[0]);
     });
 
-    fetch("http://10.2.1.135:8888/requests/insert", {
+    fetch("https://10.2.1.135:8888/requests/insert", {
     method: 'POST',
     credentials: "include",
     headers: {
