@@ -49,24 +49,6 @@ class requestService {
         return {id, housing_need, status: 'pending'};
     }
 
-    // async update(id, changes) {
-    //     let findRequest = await requestSql.findById(id);
-    //     if (!findRequest.length) throw serverError.NotFound('Заявка не найдена!');
-    //     if (!Object.keys(changes).length) 
-    //         return {
-    //             id: findRequest[0].id, 
-    //             housing_need: findRequest[0].housing_need, 
-    //             status: findRequest[0].status, 
-    //         };
-    //     await requestSql.update(id, changes);
-    //     findRequest = await requestSql.findById(id);
-    //     return {
-    //         id: findRequest[0].id, 
-    //         housing_need: findRequest[0].housing_need, 
-    //         status: findRequest[0].status, 
-    //     }
-    // }
-
     async remove(id) {
         const findRequest = await requestSql.findById(id),
             reports = reportSql.findByRequestId(id);

@@ -47,7 +47,7 @@ function addReport() {
         reportData.append(`report${index + 1}`, fileInput.files[0]);
     });
 
-    fetch("http://localhost:8888/requests/insert", {
+    fetch("https://conf_server.brsu.by:8888/requests/insert", {
     method: 'POST',
     credentials: "include",
     headers: {
