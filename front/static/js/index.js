@@ -56,7 +56,7 @@ window.fetch = async (...args) => {
     if (response.status == 401 && !config.headers.retry)
     {
         try {
-            await fetch('http://localhost:8888/users/refresh', {
+            await fetch('https://conf_server.brsu.by:8888/users/refresh', {
                 headers: { retry: true, 'withToken': false }
             }).then(response => response.json())
             .then(async (data) => {
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', async () =>  {
         if (!token) return;
         userData = JSON.parse(decodeURIComponent(atob(localStorage.getItem('conf_data'))));
         if (userData.accessToken)
-            await fetch('http://localhost:8888/users/refresh', {
+            await fetch('https://conf_server.brsu.by:8888/users/refresh', {
                 headers: {'withToken': false}
             })
             .then(response => response.json())
@@ -180,7 +180,7 @@ function login() {
         message.classList.remove('hidden');
         return;
     } 
-    fetch('http://localhost:8888/users/login', {
+    fetch('https://conf_server.brsu.by:8888/users/login', {
         headers: {
             'content-type': 'application/json',
             'withToken': false
@@ -238,7 +238,7 @@ function registration() {
         message.classList.remove('hidden');
         return;
     }
-    fetch('http://localhost:8888/users/registration', {
+    fetch('https://conf_server.brsu.by:8888/users/registration', {
         headers: {
             'content-type': 'application/json',
             'withToken': false
@@ -294,7 +294,7 @@ setInterval(calculateDays, 60*60*24*1000);
 
 async function updateRequestStatus(requestId, requestStatus) {
     try {
-        const response = await fetch(`htpp://localhost:8888/request/${requestId}`, {
+        const response = await fetch(`htpp://10.2.1.135:8888/request/${requestId}`, {
             method: `PUT`,
             headers: {
                 'content-type': 'application/json',
@@ -313,7 +313,7 @@ async function updateRequestStatus(requestId, requestStatus) {
 async function getAllRequestByUser() {
     try {
         const userId = JSON.parse(decodeURIComponent(atob(localStorage.getItem('conf_data')))).user.id;
-        const response = await fetch(`http://localhost:8888/requests/get-personal/${userId}`, {
+        const response = await fetch(`https://conf_server.brsu.by:8888/requests/get-personal/${userId}`, {
             method: `GET`,
             headers: {
             'content-type': 'application/json',
@@ -329,7 +329,7 @@ async function getAllRequestByUser() {
 
 async function getAllRequestForAdmin() {
     try {
-        const response = await fetch(`http://localhost:8888/requests/get-all`, {
+        const response = await fetch(`https://conf_server.brsu.by:8888/requests/get-all`, {
             method: `GET`,
             headers: {
             'content-type': 'application/json',
@@ -345,7 +345,7 @@ async function getAllRequestForAdmin() {
 
 async function deleteRequestById(requestId) {
     try {
-        const response = await fetch(`http://localhost:8888/requests/remove/${requestId}`, {
+        const response = await fetch(`https://conf_server.brsu.by:8888/requests/remove/${requestId}`, {
             method: `DELETE`,
             headers: {
             'content-type': 'application/json',
