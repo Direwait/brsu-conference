@@ -1,4 +1,4 @@
-const { ServiceException } = require("@smithy/smithy-client");
+// const { ServiceException } = require("@smithy/smithy-client");
 
 function addReportForm(){
     const reportForm = document.querySelector(".form-add-report");
