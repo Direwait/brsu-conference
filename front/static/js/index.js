@@ -88,7 +88,7 @@ window.fetch = async (...args) => {
 document.addEventListener('DOMContentLoaded', async () =>  {
     let userData = null;
     
-    const savedPage = localStorage.getItem('lastPage');
+    const savedPage = localStorage.getItem('lastPage') || 'front/page/about.html';
     if (savedPage !== 'front/page/registration.html' && savedPage !== 'front/page/login.html') {
         changeContent(savedPage);
     }
