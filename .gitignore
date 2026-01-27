@@ -1,9 +1,3 @@
-# Report files
-/server/files/
-
-# VSCode settings
-/.vscode
-
 # Logs
 logs
 *.log
@@ -140,3 +134,5 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+/.vscode
+/server/files
