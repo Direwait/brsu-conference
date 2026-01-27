@@ -1,8 +1,8 @@
 # Report files
-files/*
+files/
 
 # VSCode settings
-.vscode
+settings.json
 
 # Logs
 logs
