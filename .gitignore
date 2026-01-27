@@ -1,3 +1,9 @@
+# VSCode settings
+.vscode/
+
+# Report files
+files/
+
 # Logs
 logs
 *.log
