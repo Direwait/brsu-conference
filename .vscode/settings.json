@@ -2,8 +2,8 @@
     "liveServer.settings.host": "conf_model.brsu.by",
     "liveServer.settings.port": 443,
     "liveServer.settings.https": {
-        "cert": "E:\\GitHub\\conf-brsu-by\\server\\cert\\brsu\\cert.crt",
-        "key": "E:\\GitHub\\conf-brsu-by\\server\\cert\\brsu\\key.key",
+        "cert": "A:\\all_univer_labs\\conf-brsu-by\\server\\cert\\brsu\\cert.crt",
+        "key": "A:\\all_univer_labs\\conf-brsu-by\\server\\cert\\brsu\\key.key",
         "enable": true,
         "passphrase": ""
     }

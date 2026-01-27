@@ -444,7 +444,7 @@ function renderReports(reportsArray) {
                 <div><strong>Формат:</strong> ${report.report_form || 'Не указан'}</div> 
                 <div><strong>Направление:</strong> ${report.scientific_direction}</div> 
                 ${report.report_filename 
-                    ? `<div><strong>Файл:</strong> <a class="report-link" href="../server/files/${report.report_filename}" target="_blank">Скачать</a></div>` 
+                    ? `<div><strong>Файл:</strong> <a class="report-link" href="https://conf_server.brsu.by:8888/${report.report_filename}" target="_blank">Скачать</a></div>` 
                     : ''
                 }
             </div>
