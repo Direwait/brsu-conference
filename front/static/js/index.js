@@ -1,5 +1,3 @@
-import {parseToRequestWithReports } from './requestCard.js';
-
 const {fetch: originalFetch} = window, 
 
 functions = {

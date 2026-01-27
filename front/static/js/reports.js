@@ -1,5 +1,3 @@
-// const { ServiceException } = require("@smithy/smithy-client");
-
 function addReportForm(){
     const reportForm = document.querySelector(".form-add-report");
     const clonedForm = reportForm.cloneNode(true)
