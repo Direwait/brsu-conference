@@ -28,6 +28,15 @@ class requestSql {
         });
     }
 
+    findByStatus(status) {
+        return new Promise((resolve, reject) => {
+            db.query('SELECT * FROM requests WHERE status = ?;', [status], (err, results) => {
+                if (err) reject(new Error(err.message));
+                else resolve(results);
+            });
+        });
+    }
+
     // update(id, changes) {
     //     return new Promise((resolve, reject) => {
     //         db.query('UPDATE requests SET ? WHERE id = ?;', [changes, id], (err, results) => {

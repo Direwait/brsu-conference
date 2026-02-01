@@ -18,7 +18,7 @@ class fileService {
         return file.name;
     }
 
-    async deleteFile(filename) {
+    deleteFile(filename) {
         fs.rm(path.resolve('.', 'files', filename))
         .catch(err => {
             if (err) throw serverError.NotFound('Ошибка при удалении файла!');

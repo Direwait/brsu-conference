@@ -5,9 +5,7 @@ dotenv.config();
 class mailService {
     constructor() {
         this.transporter = nodemailer.createTransport({
-            host: process.env.MAIL_HOST,
-            port: process.env.MAIL_PORT,
-            secure: true,
+            service: 'gmail',
             auth: {
                 user: process.env.MAIL_USER,
                 pass: process.env.MAIL_PASSWORD
@@ -18,14 +16,14 @@ class mailService {
 
     async sendResetMail(to, code) {
         await this.transporter.sendMail({
-            from: process.env.MAIL_USER,
+            from: '"Техподдержка БрГУ" <noreply_brsu_test3rjf@mail.ru>',
             to,
-            subject: 'test mail',
+            subject: 'Запрос на восстановление пароля',
             text: '',
             html:
 
                     `<div>
-                        <h1>your code ${code}</h1>
+                        <h1>Ваш код ${code}</h1>
                     </div>`
         })
     }

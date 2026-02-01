@@ -21,7 +21,7 @@ class reportService {
     async remove(id) {
         const findReport = await reportSql.findById(id);
         if (!findReport.length) throw serverError.NotFound('Доклад не найден!');
-        await fileService.deleteFile(findReport[0].report_filename);
+        if (findReport[0].report_filename) fileService.deleteFile(findReport[0].report_filename);
         await reportSql.removeById(id);
     }
 

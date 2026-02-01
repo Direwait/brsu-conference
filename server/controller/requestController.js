@@ -17,7 +17,7 @@ class requestController {
 
     async getAll(req, res, next) {
         try {
-            const requests = await requestService.getAll();
+            const requests = await requestService.getAll(req.params.status);
             res.json(requests);
         } catch (e) {
             next(e)
@@ -35,7 +35,6 @@ class requestController {
 
     async insert(req, res, next) {
         try {
-            console.log('Received body:', req.body)
             console.log(req.body)
             const {userID, housing_need} = req.body;
             const reports = JSON.parse(req.body.reports), files = req.files;
@@ -55,7 +54,7 @@ class requestController {
             const id = req.params.id;
             const reports = await requestService.remove(id);
             for (let i = 0; i < reports.length; i++)
-                await fileService.deleteFile(reports[i].report_filename);
+                if (reports[i].report_filename) fileService.deleteFile(reports[i].report_filename);
             res.status(200).json();
         } catch (e) {
             next(e)

@@ -125,7 +125,7 @@ class userService {
         const reports = await reportSql.findByUserId(id);
         await userSql.removeById(id);
         for (let i = 0; i < reports.length; i++)
-            await fileService.deleteFile(reports[i].report_filename);
+            if (reports[i].report_filename) fileService.deleteFile(reports[i].report_filename);
     }
 
     async getName(id) {
@@ -138,6 +138,7 @@ class userService {
         const findUser = await userSql.findByEmail(email);
         if (!findUser.length) throw serverError.NotFound('Пользователь с данной электронной почтой не зарегистрирован!');
         const code = new Date().getTime().toString();
+        await userSql.setCode(email, code);
         await mailService.sendResetMail(email, code);
         return findUser[0].id;
     }

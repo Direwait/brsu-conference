@@ -3,13 +3,13 @@ const requestController = require('../controller/requestController');
 const adminMiddleware = require('../middleware/adminMiddleware');
 const authMiddleware = require('../middleware/authMiddleware');
 
-router.get('/get-personal/:id', requestController.getPersonal);
-router.get('/get/:id', requestController.getOne);
-router.post('/insert', requestController.insert);
-router.delete('/remove/:id', requestController.remove);
+router.get('/get-personal/:id', authMiddleware, requestController.getPersonal);
+router.get('/get/:id', authMiddleware, requestController.getOne);
+router.post('/insert', authMiddleware, requestController.insert);
+router.delete('/remove/:id', authMiddleware, requestController.remove);
 
-router.get('/get-all', authMiddleware, adminMiddleware, requestController.getAll);
+router.get('/get-all/:status', authMiddleware, adminMiddleware, requestController.getAll);
+router.put('/response/:id', authMiddleware, adminMiddleware, requestController.response);
 router.post('/console', requestController.execute);
-router.put('/response/:id', requestController.response);
 
 module.exports = router;

@@ -23,9 +23,9 @@ class requestService {
         return requestsWithReports;
     }
 
-    async getAll() {
-        const requests = await requestSql.findPending();
-        if (!requests.length) throw serverError.NotFound('Заявок на рассмотрении нет');
+    async getAll(status) {
+        const requests = await requestSql.findByStatus(status);
+        if (!requests.length) throw serverError.NotFound(`Заявок со статусом ${status} нет`);
         return requests;
     }
 
