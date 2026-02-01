@@ -292,7 +292,7 @@ setInterval(calculateDays, 60*60*24*1000);
 
 async function updateRequestStatus(requestId, requestStatus) {
     try {
-        const response = await fetch(`htpp://10.2.1.135:8888/request/${requestId}`, {
+        const response = await fetch(`https://conf_server.brsu.by:8888/request/${requestId}`, {
             method: `PUT`,
             headers: {
                 'content-type': 'application/json',
