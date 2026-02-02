@@ -33,7 +33,7 @@ async function codeOnEmail() {
         });
         const responseData = await response.json();
         localStorage.setItem('resetUserId', responseData);
-        // console.log(localStorage.getItem('resetUserId'));
+        console.log(localStorage.getItem('resetUserId'));
         changeContent('front/page/newPassword.html');
     } catch (error) {
         console.error("Ошибка с запросом на оптравку кода на почту", error)
