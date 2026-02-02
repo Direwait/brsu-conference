@@ -147,7 +147,8 @@ class userService {
         const findUser = await userSql.findById(id);
         if (!findUser.length) throw serverError.NotFound('Пользователь не найден!');
         if (code !== findUser[0].reset_code) throw serverError.BadRequest('Неправильный код!');
-        await userSql.update(id, {password});
+        const hashPassword = await bcrypt.hash(password, 4);
+        await userSql.update(id, {hashPassword});
         await userSql.removeCode(id);
     }
 

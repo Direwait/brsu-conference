@@ -7,7 +7,7 @@ class userController {
     async registration(req, res, next) {
         try {
             const errors = validationResult(req);
-            if (!errors.isEmpty()) return next(serverError.BadRequest('Ошибка при валидации!', errors.array()))
+            if (!errors.isEmpty()) return next(serverError.BadRequest('Ошибка при валидации!', errors.array()));
             const userData = await userService.registration(req.body);
             res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
             return res.json(userData)
@@ -51,7 +51,7 @@ class userController {
     async update(req, res, next) {
         try {
             const errors = validationResult(req);
-            if (!errors.isEmpty()) return next(serverError.BadRequest('Ошибка при валидации!', errors.array()))
+            if (!errors.isEmpty()) return next(serverError.BadRequest('Ошибка при валидации!', errors.array()));
             const userData = await userService.update({ ...req.body, ...req.params });
             res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
             res.json(userData);
@@ -62,6 +62,8 @@ class userController {
 
     async sendCode(req, res, next) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) return next(serverError.BadRequest('Неправильный адрес почты!', errors.array()));
             const email = req.body.email;
             const userID = await userService.sendCode(email);
             res.json(userID);
@@ -72,6 +74,8 @@ class userController {
 
     async resetPassword(req, res, next) {
         try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) return next(serverError.BadRequest('Длина пароля должна быть от 8 до 255 символов!', errors.array()));
             const {id, code, password} = req.body;
             await userService.resetPassword(id, code, password);
             res.status(200).json();

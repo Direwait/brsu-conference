@@ -15,9 +15,18 @@ class requestController {
         }
     }
 
+    async getByStatus(req, res, next) {
+        try {
+            const requests = await requestService.getByStatus(req.params.status);
+            res.json(requests);
+        } catch (e) {
+            next(e)
+        }
+    }
+
     async getAll(req, res, next) {
         try {
-            const requests = await requestService.getAll(req.params.status);
+            const requests = await requestService.getAll();
             res.json(requests);
         } catch (e) {
             next(e)

@@ -17,8 +17,14 @@ router.put('/update/:id',
     body('changes[password]').optional().isLength({ min: 8, max: 255 }),
     userController.update
 );
-router.post('/reset-code', userController.sendCode); 
-router.post('/reset-pass', userController.resetPassword); 
+router.post('/reset-code',
+    body('email').isEmail(),
+    userController.sendCode
+); 
+router.post('/reset-pass',
+    body('password').isLength({ min: 8, max: 255 }),
+    userController.resetPassword
+);
 router.delete('/remove/:id', authMiddleware, userController.remove);
 router.get('/get', userController.getUsers);
 

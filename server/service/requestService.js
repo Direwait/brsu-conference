@@ -23,10 +23,32 @@ class requestService {
         return requestsWithReports;
     }
 
-    async getAll(status) {
+    async getByStatus(status) {
         const requests = await requestSql.findByStatus(status);
         if (!requests.length) throw serverError.NotFound(`Заявок со статусом ${status} нет`);
-        return requests;
+        const requestsWithReports = [];
+        for (let i = 0; i < requests.length; i++) {
+            const findReports = await reportSql.findByRequestId(requests[i].id);
+            requestsWithReports.push({
+                request: requests[i],
+                reports: findReports
+            })
+        }
+        return requestsWithReports;
+    }
+
+    async getAll() {
+        const requests = await requestSql.findAll();
+        if (!requests.length) throw serverError.NotFound('Заявки не найдены!');
+        const requestsWithReports = [];
+        for (let i = 0; i < requests.length; i++) {
+            const findReports = await reportSql.findByRequestId(requests[i].id);
+            requestsWithReports.push({
+                request: requests[i],
+                reports: findReports
+            })
+        }
+        return requestsWithReports;
     }
 
     async getOne(id) {

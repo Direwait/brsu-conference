@@ -10,6 +10,15 @@ class requestSql {
         });
     }
 
+    findAll() {
+        return new Promise((resolve, reject) => {
+            db.query('SELECT * FROM requests;', (err, results) => {
+                if (err) reject(new Error(err.message));
+                else resolve(results);
+            });
+        });
+    }
+
     findById(id) {
         return new Promise((resolve, reject) => {
             db.query('SELECT * FROM requests WHERE id = ?;', [id], (err, results) => {
