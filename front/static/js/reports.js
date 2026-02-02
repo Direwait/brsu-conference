@@ -17,9 +17,7 @@ function addReportForm(){
 }
 
 function addReport() {
-    const id = JSON.parse(decodeURIComponent(atob(localStorage.getItem('conf_data')))).user.id;
-    //const token = JSON.parse(decodeURIComponent(atob(localStorage.getItem('conf_data')))).accessToken;
-    
+    const id = JSON.parse(decodeURIComponent(atob(localStorage.getItem('conf_data')))).user.id;    
     const allReports = [];
     
     document.querySelectorAll('.form-add-report').forEach((div, index) => {

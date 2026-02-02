@@ -290,6 +290,7 @@ function registration() {
 calculateDays();
 setInterval(calculateDays, 60*60*24*1000);
 
+
 async function updateRequestStatus(requestId, requestStatus) {
     try {
         const response = await fetch(`https://conf_server.brsu.by:8888/request/${requestId}`, {
@@ -327,7 +328,8 @@ async function getAllRequestByUser() {
 
 async function getAllRequestForAdmin() {
     try {
-        const response = await fetch(`https://conf_server.brsu.by:8888/requests/get-all`, {
+        let status = "pending";
+        const response = await fetch(`https://conf_server.brsu.by:8888/requests/get-all/${status}`, {
             method: `GET`,
             headers: {
             'content-type': 'application/json',
@@ -355,6 +357,7 @@ async function deleteRequestById(requestId) {
         console.error("Ошибка с удаленния заявки по id", error);
     }
 }
+
 function parseToRequestWithReports(requestsList) {
     if (!Array.isArray(requestsList)) {
         throw new Error(`RequestList должен быть массив объектов`)
@@ -376,10 +379,14 @@ class RequestCardWithReports {
 async function renderAllRequests() {
 
     try {
-        console.log("gjckt в try")
         
         const rawData = await getAllRequestByUser();
-        //else() const rawData = await getAllRequestForAdmin();
+        //const rawData = await getAllRequestForAdmin();
+        
+        if (!Array.isArray(rawData)) {
+            return; // СТОП рендер
+        }
+ 
         const requestCards = parseToRequestWithReports(rawData);
         const html = requestCards.map(card => renderRequestItem(card)).join('');
         
@@ -428,7 +435,7 @@ function renderRequestItem(requestCards) {
 
 function renderReports(reportsArray) {
     if (!reportsArray || !Array.isArray(reportsArray) || reportsArray.length === 0) {
-        return '';
+        return 'Текущих заявок нет';
     }
     
     return reportsArray.map((report, index) => `
@@ -448,4 +455,73 @@ function renderReports(reportsArray) {
             </div>
         </div><br>
     `).join('');
+}
+
+
+/**/
+async function renderAllRequestsFormAdmin() {
+
+    try {
+
+        const rawData = await getAllRequestForAdmin();
+        const requestCards = parseToRequestWithReports(rawData);
+        console.log(rawData);
+        let html = ''
+        if (!requestCards === '') { 
+            html = requestCards.map(card => renderRequestItemForAdmin(card)).join('');
+        }
+        
+        const container = document.querySelector('.request-list');
+        if (container) {
+            container.innerHTML = html;
+        }
+        
+        document.querySelectorAll('.request-delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const requestId = this.dataset.id;
+                console.log('Удалить заявку:', requestId);
+            });
+        });
+        
+    } catch (error) {
+        console.error('Ошибка рендера:', error);
+    }
+}
+
+function renderRequestItemForAdmin(requestCards) {
+    const hasReports = requestCards.requestReports && 
+                       Array.isArray(requestCards.requestReports) && 
+                       requestCards.reports.length > 0;
+
+    if (requestCards.requestStatus = 'pending')
+        requestCards.requestStatus = 'В ожидании';
+    else if(requestCards.requestStatus = 'aproved') requestCards.requestStatus = 'Принята';
+    else requestCards.requestStatus = 'Отклонено';
+    
+    return `
+        <div class="request-item" data-id="${requestCards.requestId}">
+            <ul class="request-info">
+                <div>Потребность в жилье? ${requestCards.housingNeed === 1 ? 'Да' : 'Нет'}</div>
+                <div>Статус: ${requestCards.requestStatus}</div>
+                <div>
+                    <button onclick="deleteRequestById('${requestCards.requestId}')" class="request-delete-btn" id="${requestCards.requestId}">
+                        Удалить
+                    </button>
+                </div>
+            </ul>            
+                ${renderReports(requestCards.reports)}
+            <div style="text-align: center;">
+             <button onclick="deleteRequestById('${requestCards.requestId}')" class="request-delete-btn" id="${requestCards.requestId}">
+                        Удалить
+                </button>
+                <button onclick="updateRequestStatus('${requestCards.requestId}', 'aproved')" style="background-color: green">
+                    ПРИНЯТЬ
+                </button> 
+
+                <button onclick="updateRequestStatus('${requestCards.requestId}', 'rejected')" style="background-color: red">
+                    ОТКЛОНИТЬ
+                </button> 
+            </div>
+        </div>
+    `;
 }
