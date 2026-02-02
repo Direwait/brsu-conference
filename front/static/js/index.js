@@ -1,11 +1,10 @@
 const { fetch: originalFetch } = window, 
-
     
 functions = {
     'front/page/profile.html': profile,
     'front/page/personal-requests.html': renderAllRequests,
     'front/page/department-requests.html': renderAllRequestsFormAdmin,
-    'front/page/accepted-requests.html': renderAllRequests,
+    'front/page/accepted-requests.html': renderAllRequestsFormAdminAproved,
 }
 
 degrees = {
@@ -127,26 +126,6 @@ document.addEventListener('DOMContentLoaded', async () =>  {
     }
 });
 
-function toggleText(id) {
-    var textDiv = document.getElementById(id);
-    if (textDiv.classList.contains('show')) {
-        textDiv.classList.remove('show');
-    } else {
-        textDiv.classList.add('show');
-    }
-}
-
-function calculateDays() {
-    const currentDate = new Date();
-    const targetDate = new Date(currentDate.getFullYear(), 3, 25);
-    if (currentDate > targetDate) {
-        targetDate.setFullYear(targetDate.getFullYear() + 1);
-    }
-    const timeDifference = targetDate - currentDate;
-    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    document.getElementById("days").textContent = days;
-}
-
 function changeContent(fileName) {
     localStorage.setItem('lastPage', fileName);
     fetch(fileName, {headers: {'withToken': false}})
@@ -161,153 +140,30 @@ function changeContent(fileName) {
         });
 }
 
-function login() {
-    let email = document.querySelector('#email'),
-        password = document.querySelector('#password'),
-        message = document.querySelector('.message'),
-        values = email.parentElement.parentElement.querySelectorAll('input'),
-        oneEmpty = false;
-    message.classList.add('hidden');
-    message.innerHTML = '';
-    for (let i = 0; i < values.childElementCount; i++)
-        if (!values.children[i].value) {
-            oneEmpty = true;
-            break;
-        }
-    if (oneEmpty) {
-        message.innerHTML = 'Все поля должны быть заполнены!';
-        message.classList.remove('hidden');
-        return;
-    } 
-    fetch('https://conf_server.brsu.by:8888/users/login', {
-        headers: {
-            'content-type': 'application/json',
-            'withToken': false
-        },
-        method: 'post',
-        body: JSON.stringify({
-            email: email.value,
-            password: password.value
-        })
-    }).then(response => response.json())
-    .then(data => {
-        if (data.message) {
-            message.innerHTML = data.message;
-            message.classList.remove('hidden');
-            return;
-        }
-        localStorage.setItem('conf_data', btoa(encodeURIComponent(JSON.stringify({
-            accessToken: data.accessToken,
-            user: data.user
-        }))));
-    
-        location.reload();
-    });
-}
-
-function registration() {
-    
-    let surname = document.querySelector('#surname'),
-        name = document.querySelector('#name'),
-        fathername = document.querySelector('#fathername'),
-        degree = document.querySelector('#select-degree'),
-        title = document.querySelector('#select-title'),
-        place = document.querySelector('#place-of-work'),
-        job = document.querySelector('#job-title'),
-        email = document.querySelector('#email'),
-        password = document.querySelector('#password'),
-        repeatPassword = document.querySelector('#repeat-password'),
-        message = document.querySelector('.message'),
-        oneEmpty = false,
-        values = surname.parentElement;
-    message.classList.add('hidden');
-    message.innerHTML = '';
-    for (let i = 0; i < values.childElementCount; i++)
-        if (!values.children[i].value) {
-            oneEmpty = true;
-            break;
-        }
-    if (oneEmpty) {
-        message.innerHTML = 'Все поля должны быть заполнены!';
-        message.classList.remove('hidden');
-        return
-    }
-    if (password.value !== repeatPassword.value) {
-        message.innerHTML = 'Пароли не совпадают!';
-        message.classList.remove('hidden');
-        return;
-    }
-    fetch('https://conf_server.brsu.by:8888/users/registration', {
-        headers: {
-            'content-type': 'application/json',
-            'withToken': false
-        },
-        method: 'post',
-        body: JSON.stringify({
-            email: email.value,
-            password: password.value,
-            surname: surname.value,
-            name: name.value,
-            fathername: fathername.value,
-            academic_degree: degree.value,
-            academic_title: title.value,
-            work_address: place.value,
-            job_title: job.value
-        })
-    }).then(response => response.json())
-    .then(data => {
-        if (data.errors && data.errors.length) {
-            let wrongEmail = false, wrongPass = false;
-            for (let i = 0; i < data.errors.length; i++) {
-                if (Object.values(data.errors[i]).indexOf('email') != -1)
-                    wrongEmail = true;
-                if (Object.values(data.errors[i]).indexOf('password') != -1)
-                    wrongPass = true;
-            }
-            if (wrongEmail) {
-                message.innerHTML = 'Неправильный адрес почты!';
-                message.classList.remove('hidden');
-                return;
-            }
-
-            if (wrongPass) {
-                message.innerHTML = 'Длина пароля должна быть минимум 8 символов!';
-                message.classList.remove('hidden');
-                return;
-            }
-        }
-        if (data.message) {
-            message.innerHTML = data.message;
-            message.classList.remove('hidden');
-            return;
-        }
-        localStorage.setItem('conf_data', btoa(encodeURIComponent(JSON.stringify({
-            accessToken: data.accessToken,
-            user: data.user
-        }))));
-        location.reload();
-    });
-}
-calculateDays();
-setInterval(calculateDays, 60*60*24*1000);
-
 
 async function updateRequestStatus(requestId, requestStatus) {
     try {
-        const response = await fetch(`https://conf_server.brsu.by:8888/request/${requestId}`, {
+        const response = await fetch(`https://conf_server.brsu.by:8888/requests/response/${requestId}`, {
             method: `PUT`,
             headers: {
                 'content-type': 'application/json',
                 'withToken': true
             },
-            body: {
-                'status': `${requestStatus}`
-            }
+            body: JSON.stringify({
+                status: requestStatus
+            }) 
         });
+
+        hideById(requestId)
         return response.ok;
     } catch (error) {
         console.error("Ошибка обновление статуса заявки по id")
     }
+}
+function hideById(id) {
+    const request = document.querySelector(`[data-id="${id}"]`);
+    if (request)
+        request.style.display = 'none';
 }
 
 async function getAllRequestByUser() {
@@ -327,9 +183,8 @@ async function getAllRequestByUser() {
     }
 }
 
-async function getAllRequestForAdmin() {
+async function getAllRequestForAdmin(status) {
     try {
-        let status = "pending";
         const response = await fetch(`https://conf_server.brsu.by:8888/requests/get-all/${status}`, {
             method: `GET`,
             headers: {
@@ -413,9 +268,9 @@ function renderRequestItem(requestCards) {
                        Array.isArray(requestCards.requestReports) && 
                        requestCards.reports.length > 0;
 
-    if (requestCards.requestStatus = 'pending')
+    if (requestCards.requestStatus == 'pending')
         requestCards.requestStatus = 'В ожидании';
-    else if(requestCards.requestStatus = 'aproved') requestCards.requestStatus = 'Принята';
+    else if(requestCards.requestStatus == 'approved') requestCards.requestStatus = 'Принята';
     else requestCards.requestStatus = 'Отклонено';
     
     return `
@@ -458,20 +313,54 @@ function renderReports(reportsArray) {
     `).join('');
 }
 
+function renderRequestItemForAdmin(requestCards) {
+    const hasReports = requestCards.requestReports && 
+                       Array.isArray(requestCards.requestReports) && 
+                       requestCards.reports.length > 0;
 
-/**/
-async function renderAllRequestsFormAdmin() {
+    if (requestCards.requestStatus == 'pending') { 
+        requestCards.requestStatus = 'В ожидании';
+    }
+
+    else if (requestCards.requestStatus == 'approved') {
+        requestCards.requestStatus = 'Принята';        
+    }
+    else requestCards.requestStatus = 'Отклонено';
+    
+    return `
+        <div class="request-item" data-id="${requestCards.requestId}">
+            <ul class="request-info">
+                <div>Потребность в жилье? ${requestCards.housingNeed === 1 ? 'Да' : 'Нет'}</div>
+                <div>Статус: ${requestCards.requestStatus}</div>
+                <div>
+                    <button onclick="deleteRequestById('${requestCards.requestId}')" class="request-delete-btn" id="${requestCards.requestId}">
+                        Удалить
+                    </button>
+                </div>
+            </ul>            
+                ${renderReports(requestCards.reports)}
+            <div style="text-align: center;">
+                <button onclick="updateRequestStatus('${requestCards.requestId}', 'approved')" style="background-color: green">
+                    ПРИНЯТЬ
+                </button> 
+
+                <button onclick="updateRequestStatus('${requestCards.requestId}', 'rejected')" style="background-color: red">
+                    ОТКЛОНИТЬ
+                </button> 
+            </div>
+        </div>
+    `;
+}
+
+/*дубляж*/
+async function renderAllRequestsFormAdminAproved() {
 
     try {
 
-        const rawData = await getAllRequestForAdmin();
+        const rawData = await getAllRequestForAdmin('approved');
         const requestCards = parseToRequestWithReports(rawData);
-        console.log(rawData);
-        let html = ''
-        if (!requestCards === '') { 
-            html = requestCards.map(card => renderRequestItemForAdmin(card)).join('');
-        }
-        
+
+        const html = requestCards.map(card => renderRequestItem(card)).join('');
         const container = document.querySelector('.request-list');
         if (container) {
             container.innerHTML = html;
@@ -489,40 +378,28 @@ async function renderAllRequestsFormAdmin() {
     }
 }
 
-function renderRequestItemForAdmin(requestCards) {
-    const hasReports = requestCards.requestReports && 
-                       Array.isArray(requestCards.requestReports) && 
-                       requestCards.reports.length > 0;
+/*для админа*/
+async function renderAllRequestsFormAdmin() {
 
-    if (requestCards.requestStatus = 'pending')
-        requestCards.requestStatus = 'В ожидании';
-    else if(requestCards.requestStatus = 'aproved') requestCards.requestStatus = 'Принята';
-    else requestCards.requestStatus = 'Отклонено';
-    
-    return `
-        <div class="request-item" data-id="${requestCards.requestId}">
-            <ul class="request-info">
-                <div>Потребность в жилье? ${requestCards.housingNeed === 1 ? 'Да' : 'Нет'}</div>
-                <div>Статус: ${requestCards.requestStatus}</div>
-                <div>
-                    <button onclick="deleteRequestById('${requestCards.requestId}')" class="request-delete-btn" id="${requestCards.requestId}">
-                        Удалить
-                    </button>
-                </div>
-            </ul>            
-                ${renderReports(requestCards.reports)}
-            <div style="text-align: center;">
-             <button onclick="deleteRequestById('${requestCards.requestId}')" class="request-delete-btn" id="${requestCards.requestId}">
-                        Удалить
-                </button>
-                <button onclick="updateRequestStatus('${requestCards.requestId}', 'aproved')" style="background-color: green">
-                    ПРИНЯТЬ
-                </button> 
+    try {
 
-                <button onclick="updateRequestStatus('${requestCards.requestId}', 'rejected')" style="background-color: red">
-                    ОТКЛОНИТЬ
-                </button> 
-            </div>
-        </div>
-    `;
+        const rawData = await getAllRequestForAdmin('pending');
+        const requestCards = parseToRequestWithReports(rawData);
+
+        const html = requestCards.map(card => renderRequestItemForAdmin(card)).join('');
+        const container = document.querySelector('.request-list');
+        if (container) {
+            container.innerHTML = html;
+        }
+        
+        document.querySelectorAll('.request-delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const requestId = this.dataset.id;
+                console.log('Удалить заявку:', requestId);
+            });
+        });
+        
+    } catch (error) {
+        console.error('Ошибка рендера:', error);
+    }
 }
