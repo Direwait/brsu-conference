@@ -1,11 +1,12 @@
-const {fetch: originalFetch} = window, 
+const { fetch: originalFetch } = window, 
 
+    
 functions = {
     'front/page/profile.html': profile,
     'front/page/personal-requests.html': renderAllRequests,
-    'front/page/department-requests.html': renderAllRequests,
-    'front/page/accepted-requests.html': renderAllRequests
-},
+    'front/page/department-requests.html': renderAllRequestsFormAdmin,
+    'front/page/accepted-requests.html': renderAllRequests,
+}
 
 degrees = {
     'candidate': 'Кандидат наук',
