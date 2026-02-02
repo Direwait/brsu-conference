@@ -191,3 +191,52 @@ function registration() {
         location.reload();
     });
 }
+
+async function getAllRequestByUser() {
+    try {
+        const userId = JSON.parse(decodeURIComponent(atob(localStorage.getItem('conf_data')))).user.id;
+        const response = await fetch(`https://conf_server.brsu.by:8888/requests/get-personal/${userId}`, {
+            method: `GET`,
+            headers: {
+            'content-type': 'application/json',
+            'withToken': true      
+            }
+        });
+        const listOfRequestwithReports = await response.json();
+        return listOfRequestwithReports;
+    } catch (error) {
+        console.error("Ошибка с получениям списка заявок пользователя", error);
+    }
+}
+
+async function getAllRequestForAdmin(status) {
+    try {
+        const response = await fetch(`https://conf_server.brsu.by:8888/requests/get-all/${status}`, {
+            method: `GET`,
+            headers: {
+            'content-type': 'application/json',
+            'withToken': true      
+            }
+        });
+        const listOfRequestwithReports = await response.json();
+        return listOfRequestwithReports;
+    } catch (error) {
+        console.error("Ошибка с получениям списка заявок пользователя", error);
+    }
+}
+
+async function deleteRequestById(requestId) {
+    try {
+        const response = await fetch(`https://conf_server.brsu.by:8888/requests/remove/${requestId}`, {
+            method: `DELETE`,
+            headers: {
+            'content-type': 'application/json',
+            'withToken': true      
+            }
+        });
+        location.reload();
+        return response.ok;
+    } catch (error) {
+        console.error("Ошибка с удаленния заявки по id", error);
+    }
+}

@@ -44,17 +44,39 @@ function addReport() {
     });
 
     fetch("https://conf_server.brsu.by:8888/requests/insert", {
-    method: 'POST',
-    credentials: "include",
-    headers: {
-        'withToken': true
-    },
+        method: 'POST',
+        credentials: "include",
+        headers: {
+            'withToken': true
+        },
         body: reportData
     })
-    .then(response => {
-        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
+        .then(response => {
+            if (!response.ok) {
+                location.reload();
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        return response.json();
-    })
+            location.reload();
+            return response.json();
+        });
+}
+
+async function updateRequestStatus(requestId, requestStatus) {
+    try {
+        const response = await fetch(`https://conf_server.brsu.by:8888/requests/response/${requestId}`, {
+            method: `PUT`,
+            headers: {
+                'content-type': 'application/json',
+                'withToken': true
+            },
+            body: JSON.stringify({
+                status: requestStatus
+            }) 
+        });
+
+        hideById(requestId)
+        return response.ok;
+    } catch (error) {
+        console.error("Ошибка обновление статуса заявки по id")
+    }
 }
