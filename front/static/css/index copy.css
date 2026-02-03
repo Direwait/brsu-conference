@@ -9,6 +9,7 @@ html,body {
 }
 html {
     overflow-y: scroll;
+    overscroll-behavior: none;
 }
 
 @font-face {
@@ -65,9 +66,7 @@ html {
 .menu ul li {
     display: inline-block;
 }
-
-a:link,
-a:visited {
+a, a:link, a:visited {
     color: rgb(255, 255, 255);
     text-decoration: none;
     display: block;
@@ -81,6 +80,7 @@ a:hover {
     text-decoration: none;
     text-decoration: underline;
     text-decoration-thickness: 2px;
+    cursor: pointer;
 }
 
 
