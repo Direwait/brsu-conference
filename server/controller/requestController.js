@@ -50,9 +50,13 @@ class requestController {
             const request = await requestService.insert(userID, housing_need);
             const reportsData = [];
             for (let i = 0; i < reports.length; i++)
-                reportsData.push(await reportService.insert({...reports[i], requestID: request.id, file: files[reports[i].key]}));
+                reportsData.push(await reportService.insert({
+                    ...reports[i], 
+                    requestID: request.id, 
+                    file: files ? files[reports[i].key] : ''
+                }));
 
-            res.json({request, reportsData});
+            res.json({request, reports: reportsData});
         } catch (e) {
             next(e)
         }
