@@ -49,6 +49,7 @@ window.fetch = async (...args) => {
 }
 
 document.addEventListener('DOMContentLoaded', async () =>  {
+    initializeGallery();
     let userData = null;
     
     const savedPage = localStorage.getItem('lastPage') || 'front/page/about.html';

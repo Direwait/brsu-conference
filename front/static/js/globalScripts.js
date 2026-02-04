@@ -4,7 +4,53 @@ function toggleText(id) {
         textDiv.classList.remove('show');
     } else {
         textDiv.classList.add('show');
+        initializeGallery();
     }
+}
+
+function initializeGallery() {
+    const galleryImages = document.querySelectorAll(".gallery img");
+    const modal = document.getElementById("modal");
+    const modalImg = document.getElementById("modal-img");
+    const closeBtn = document.querySelector(".close");
+    const prevBtn = document.querySelector(".prev");
+    const nextBtn = document.querySelector(".next");
+
+    if (galleryImages.length === 0) return;
+
+    let currentIndex = 0;
+
+    galleryImages.forEach((img, index) => {
+        img.onclick = function () {
+            currentIndex = index;
+            openModal();
+        };
+    });
+
+    function openModal() {
+        modalImg.src = galleryImages[currentIndex].src;
+        modal.style.display = "flex";
+    }
+
+    closeBtn.onclick = function () {
+        modal.style.display = "none";
+    };
+
+    prevBtn.onclick = function () {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : galleryImages.length - 1;
+        openModal();
+    };
+
+    nextBtn.onclick = function () {
+        currentIndex = (currentIndex < galleryImages.length - 1) ? currentIndex + 1 : 0;
+        openModal();
+    };
+
+    modal.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
 }
 
 function calculateDays() {
@@ -36,7 +82,7 @@ function hideById(id) {
 calculateDays();
 setInterval(calculateDays, 60 * 60 * 24 * 1000);
 
-degrees = {
+const degrees = {
     'candidate': 'Кандидат наук',
     'doctor': 'Доктор наук',
     'none': 'Отсутствует'

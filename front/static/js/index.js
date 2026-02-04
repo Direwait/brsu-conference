@@ -1,9 +1,9 @@
-functions = {
+const functions = {
     'front/page/profile.html': profile,
     'front/page/personal-requests.html': renderAllRequests,
     'front/page/department-requests.html': renderAllRequestsFormAdmin,
     'front/page/accepted-requests.html': renderAllRequestsFormAdminAproved,
-}
+};
 
 function profile() {
     let name = document.querySelector('#profile #name');
@@ -26,6 +26,7 @@ function changeContent(fileName) {
         .then(response => response.text())
         .then(data => {
             document.getElementById('content').innerHTML = data;
+            initializeGallery();
             if (Object.keys(functions).includes(fileName))
                 functions[fileName]();
         })
