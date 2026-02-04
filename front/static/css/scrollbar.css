@@ -1,10 +1,38 @@
+/* Основной скролл */
 body::-webkit-scrollbar {
-    background: rgba(95, 19, 16);;
+    background: rgba(95, 19, 16);
 }
+
 body::-webkit-scrollbar-thumb {
     background: rgba(172, 33, 28, 0.295);
     border-radius: 3px;
 }
+
 body::-webkit-scrollbar-corner {
     background: rgba(95, 19, 16);
+}
+
+/* Когда галерея открыта - скрываем скролл */
+body.no-scroll::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+body.no-scroll::-webkit-scrollbar-thumb {
+    display: none;
+}
+
+body.no-scroll::-webkit-scrollbar-corner {
+    display: none;
+}
+
+/* Для Firefox */
+body.no-scroll {
+    scrollbar-width: none;
+}
+
+/* Для IE/Edge */
+body.no-scroll {
+    -ms-overflow-style: none;
 }

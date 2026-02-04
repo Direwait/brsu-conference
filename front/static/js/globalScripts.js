@@ -30,27 +30,44 @@ function initializeGallery() {
     function openModal() {
         modalImg.src = galleryImages[currentIndex].src;
         modal.style.display = "flex";
+        // Полностью блокируем скролл на html и body
+        document.documentElement.style.overflow = "hidden";
+        document.body.style.overflow = "hidden";
+        document.body.classList.add("no-scroll");
     }
 
-    closeBtn.onclick = function () {
+    function closeModal() {
         modal.style.display = "none";
-    };
+        // Восстанавливаем скролл
+        document.documentElement.style.overflow = "";
+        document.body.style.overflow = "";
+        document.body.classList.remove("no-scroll");
+    }
+
+    closeBtn.onclick = closeModal;
 
     prevBtn.onclick = function () {
         currentIndex = (currentIndex > 0) ? currentIndex - 1 : galleryImages.length - 1;
-        openModal();
+        modalImg.src = galleryImages[currentIndex].src;
     };
 
     nextBtn.onclick = function () {
         currentIndex = (currentIndex < galleryImages.length - 1) ? currentIndex + 1 : 0;
-        openModal();
+        modalImg.src = galleryImages[currentIndex].src;
     };
 
     modal.onclick = function (event) {
         if (event.target === modal) {
-            modal.style.display = "none";
+            closeModal();
         }
     };
+
+    // Закрытие по клавише ESC
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Escape" && modal.style.display === "flex") {
+            closeModal();
+        }
+    });
 }
 
 function calculateDays() {
