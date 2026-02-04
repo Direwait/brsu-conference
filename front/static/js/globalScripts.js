@@ -73,10 +73,50 @@ class RequestCardWithReports {
     }
 }
 
-function hideById(id) {
+function hideById(id, behaivor) {
     const request = document.querySelector(`[data-id="${id}"]`);
-    if (request)
+    if (!request) return;
+    
+    // Если behaivor не указан - красное растворение вниз
+    if (behaivor === "rejected" || !behaivor) {
+        request.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        request.style.boxShadow = '0 0 25px red, 0 0 40px  #95082b';
+        request.style.transform = 'translateY(20px) scale(0.95)';
+        request.style.opacity = '0';
+        request.style.filter = 'blur(3px) hue-rotate(10deg)';
+        request.style.background = 'linear-gradient(to bottom, rgba(255, 50, 50, 0.3), rgba(255, 0, 0, 0.5))';
+        
+        setTimeout(() => {
+            request.style.display = 'none';
+            request.style.transform = '';
+            request.style.opacity = '1';
+            request.style.filter = '';
+            request.style.boxShadow = '';
+            request.style.background = '';
+        }, 340);
+        return;
+    }
+    request.style.transition = 'all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)';
+    request.style.transform = 'translateY(-80px) scale(1.05)'; // Легкое увеличение при подъеме
+    request.style.opacity = '0';
+    request.style.boxShadow = `
+        0 0 20px rgba(252, 227, 0, 0.8),
+        0 0 50px rgba(252, 227, 0, 0.5),
+        0 0 100px rgba(252, 227, 0, 0.2),
+        inset 0 0 20px rgba(255, 255, 200, 0.3)
+    `; // Добавлено внутреннее свечение
+    request.style.filter = 'blur(1px) brightness(2) contrast(1.2) drop-shadow(0 0 10px #fce300)';
+    request.style.background = 'radial-gradient(circle at center, rgba(252, 227, 0, 0.3), rgba(252, 227, 0, 0.1))';
+
+    setTimeout(() => {
         request.style.display = 'none';
+        // Восстанавливаем все измененные стили
+        request.style.transform = '';
+        request.style.opacity = '1';
+        request.style.boxShadow = '';
+        request.style.filter = '';
+        request.style.background = '';
+    }, 320);
 }
 
 calculateDays();

@@ -74,7 +74,7 @@ async function updateRequestStatus(requestId, requestStatus) {
             }) 
         });
 
-        hideById(requestId)
+        hideById(requestId, requestStatus)
         return response.ok;
     } catch (error) {
         console.error("Ошибка обновление статуса заявки по id")

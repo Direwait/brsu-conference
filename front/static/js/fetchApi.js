@@ -234,7 +234,7 @@ async function deleteRequestById(requestId) {
             'withToken': true      
             }
         });
-        location.reload();
+        hideById(requestId);
         return response.ok;
     } catch (error) {
         console.error("Ошибка с удаленния заявки по id", error);

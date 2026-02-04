@@ -103,13 +103,13 @@ function renderReports(reportsArray) {
                 <span class="report-number">Доклад #${index + 1} 📎</span>
             </div>
             <div class="report-content">
-                <div><strong>Название: ${report.report_title || 'Без названия'}</div> 
+                <div><strong>Название:</strong> ${report.report_title || 'Без названия'}</div> 
                 <div><strong>Авторы:</strong> ${report.report_authors || 'Не указаны'}</div>
                 <div><strong>Формат:</strong> ${report.report_form || 'Не указан'}</div> 
                 <div><strong>Направление:</strong> ${report.scientific_direction}</div> 
                 ${report.report_filename 
                     ? `<div><strong>Файл:</strong> <a class="report-link" href="https://conf_server.brsu.by:8888/${report.report_filename}" target="_blank">Скачать</a></div>` 
-                    : ''
+                    : '<div class="no-file"><strong>Файл:</strong> Не загружен</div>'
                 }
             </div>
         </div><br>
