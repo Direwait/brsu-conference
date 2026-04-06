@@ -1,4 +1,4 @@
-@media (max-width: 1230px) {
+/*@media (max-width: 1230px) {
      .logo-container-left {
         position: absolute;
         top: 1%;
@@ -35,7 +35,7 @@
         padding-right: 20px;
     }
 }
-@media (max-width: 394px) {
+@media (max-width: 400px) {
     .title-container {
         text-align: center;
         padding: 0 0 0 0;
@@ -99,4 +99,124 @@
     height: 70px;
     background: linear-gradient(to left, #212121, #212121);
     opacity: 0.9;
+}*/
+
+.top {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    color: white;
+    min-height: 80px;
+    padding: 10px 20px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.top img {
+    height: 100px;
+    margin: 20px;
+}
+
+.top h1 {
+    text-align: center;
+    font-family: 'Montserrat-Bold';
+}
+
+.title-container {
+    display: flex;
+    justify-content: flex-end;
+    align-self: center;
+    text-align: center;
+    padding: 0 20px;
+    margin-left: auto;
+    margin-right: 230px;
+    left: 0;
+    right: 0;
+    max-height: 400px;
+    min-width: 300px;
+}
+
+.logo-container-left {
+    position: relative;
+}
+
+.logo-container-right {
+    position: relative;
+}
+
+.bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+    color: #ffffff;
+    height: 70px;
+    background: linear-gradient(to left, #212121, #212121);
+    opacity: 0.9;
+}
+
+@media (max-width: 1230px) {
+    .logo-container-left {
+        position: absolute;
+        top: 1%;
+    }
+
+    .logo-container-right {
+        position: absolute;
+        top: 1%;
+        right: 1%;
+    }
+
+        .title-container {
+            position: relative;
+            text-align: center;
+            margin-top: 140px;
+            font-size: 12px;
+            width: 100%;
+            left: 120px;
+            right: 0;
+        }
+}
+
+@media (max-width: 620px) {
+    .title-container {
+        left: 17%;
+    }
+}
+
+@media (max-width: 500px) {
+    .title-container {
+        position: relative;
+        text-align: center;
+        font-size: 10px;
+        left: 7%;
+    }
+
+    .logo-container-right {
+        display: none;
+        position: absolute;
+        top: 1%;
+        right: 1%;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 400px) {
+    .title-container {
+        text-align: center;
+        position: relative;
+        padding: 0;
+        margin-right: 0;
+        left: 0px;
+    }
+
+    .logo-container-left {
+        position: absolute;
+        left: -20px;
+    }
 }

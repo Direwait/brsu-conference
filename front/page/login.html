@@ -1,13 +1,16 @@
 <div class="form" id="login-form">
     <div>
-        <p><b>Электронная почта</b></p>
-        <input type="text" id="email">
+        <label for="email"><b>Электронная почта</b></label>
+        <input type="email" id="email" name="email">
     </div>
+
     <div>
-        <p><b>Пароль</b></p>
-        <input type="password" id="password">
+        <label for="password"><b>Пароль</b></label>
+        <input type="password" id="password" name="password">
     </div>
+    
     <input class="form-button" id="login-button" type="button" onclick="login()" value="Войти">
 </div>
 <a href="#" onclick="changeContent('front/page/relogin.html')">Забыли праоль?</a></li>
+
 <div class="message hidden"></div>

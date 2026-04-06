@@ -36,16 +36,11 @@ function changeContent(fileName) {
 }
 
 async function renderAllRequests() {
-
     try {
-        
         const rawData = await getAllRequestByUser();
-        //const rawData = await getAllRequestForAdmin();
-        
         if (!Array.isArray(rawData)) {
-            return; // СТОП рендер
+            return;
         }
- 
         const requestCards = parseToRequestWithReports(rawData);
         const html = requestCards.map(card => renderRequestItem(card)).join('');
         
@@ -53,14 +48,6 @@ async function renderAllRequests() {
         if (container) {
             container.innerHTML = html;
         }
-        
-        document.querySelectorAll('.request-delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const requestId = this.dataset.id;
-                console.log('Удалить заявку:', requestId);
-            });
-        });
-        
     } catch (error) {
         console.error('Ошибка рендера:', error);
     }
@@ -82,7 +69,7 @@ function renderRequestItem(requestCards) {
                 <div>Потребность в жилье? ${requestCards.housingNeed === 1 ? 'Да' : 'Нет'}</div>
                 <div>Статус: ${requestCards.requestStatus}</div>
                 <div>
-                    <button onclick="deleteRequestById('${requestCards.requestId}')" class="request-delete-btn" id="${requestCards.requestId}">
+                    <button onclick="showDeletePopup('${requestCards.requestId}')" class="request-delete-btn" id="${requestCards.requestId}">
                         Удалить
                     </button>
                 </div>
@@ -98,14 +85,14 @@ function renderReports(reportsArray) {
     }
     
     return reportsArray.map((report, index) => `
-        <div class="report-item" data-report-id="${report.id || index}">
+        <div class="report-item" data-report-id="${report.id}">
             <div class="report-header">
                 <span class="report-number">Доклад #${index + 1} 📎</span>
             </div>
             <div class="report-content">
                 <div><strong>Название:</strong> ${report.report_title || 'Без названия'}</div> 
                 <div><strong>Авторы:</strong> ${report.report_authors || 'Не указаны'}</div>
-                <div><strong>Формат:</strong> ${report.report_form || 'Не указан'}</div> 
+                <div><strong>Формат:</strong> ${report.report_form === "ofline" ? 'очно' : 'онлайн'}</div> 
                 <div><strong>Направление:</strong> ${report.scientific_direction}</div> 
                 ${report.report_filename 
                     ? `<div><strong>Файл:</strong> <a class="report-link" href="https://conf_server.brsu.by:8888/${report.report_filename}" target="_blank">Скачать</a></div>` 
@@ -133,7 +120,7 @@ function renderRequestItemForAdmin(requestCards) {
                 <div>Потребность в жилье? ${requestCards.housingNeed === 1 ? 'Да' : 'Нет'}</div>
                 <div>Статус: ${requestCards.requestStatus}</div>
                 <div>
-                    <button onclick="deleteRequestById('${requestCards.requestId}')" class="request-delete-btn" id="${requestCards.requestId}">
+                    <button onclick="showDeletePopup('${requestCards.requestId}')" class="request-delete-btn" id="${requestCards.requestId}">
                         Удалить
                     </button>
                 </div>
@@ -152,11 +139,9 @@ function renderRequestItemForAdmin(requestCards) {
     `;
 }
 
-/*дубляж*/
 async function renderAllRequestsFormAdminAproved() {
 
     try {
-
         const rawData = await getAllRequestForAdmin('approved');
         const requestCards = parseToRequestWithReports(rawData);
 
@@ -165,14 +150,6 @@ async function renderAllRequestsFormAdminAproved() {
         if (container) {
             container.innerHTML = html;
         }
-        
-        document.querySelectorAll('.request-delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const requestId = this.dataset.id;
-                console.log('Удалить заявку:', requestId);
-            });
-        });
-        
     } catch (error) {
         console.error('Ошибка рендера:', error);
     }
@@ -192,12 +169,12 @@ async function renderAllRequestsFormAdmin() {
             container.innerHTML = html;
         }
         
-        document.querySelectorAll('.request-delete-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const requestId = this.dataset.id;
-                console.log('Удалить заявку:', requestId);
-            });
-        });
+        // document.querySelectorAll('.request-delete-btn').forEach(btn => {
+        //     btn.addEventListener('click', function() {
+        //         const requestId = this.dataset.id;
+        //         console.log('Удалить заявку:', requestId);
+        //     });
+        // });
         
     } catch (error) {
         console.error('Ошибка рендера:', error);

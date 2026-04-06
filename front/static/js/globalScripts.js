@@ -1,3 +1,23 @@
+const degrees = {
+    'candidate': 'Кандидат наук',
+    'doctor': 'Доктор наук',
+    'none': 'Отсутствует'
+},
+titles = {
+    'docent': 'доцент',
+    'professor': 'профессор',
+    'none': 'Отсутствует'
+};
+
+class RequestCardWithReports {
+    constructor(requestData) {
+        this.requestId = requestData.request.id;
+        this.housingNeed = requestData.request.housing_need;
+        this.requestStatus = requestData.request.status || `pending`;
+        this.reports = requestData.reports || [];
+    }
+}
+
 function toggleText(id) {
     var textDiv = document.getElementById(id);
     if (textDiv.classList.contains('show')) {
@@ -30,7 +50,6 @@ function initializeGallery() {
     function openModal() {
         modalImg.src = galleryImages[currentIndex].src;
         modal.style.display = "flex";
-        // Полностью блокируем скролл на html и body
         document.documentElement.style.overflow = "hidden";
         document.body.style.overflow = "hidden";
         document.body.classList.add("no-scroll");
@@ -38,7 +57,6 @@ function initializeGallery() {
 
     function closeModal() {
         modal.style.display = "none";
-        // Восстанавливаем скролл
         document.documentElement.style.overflow = "";
         document.body.style.overflow = "";
         document.body.classList.remove("no-scroll");
@@ -62,7 +80,6 @@ function initializeGallery() {
         }
     };
 
-    // Закрытие по клавише ESC
     document.addEventListener("keydown", function(event) {
         if (event.key === "Escape" && modal.style.display === "flex") {
             closeModal();
@@ -81,20 +98,10 @@ function calculateDays() {
     document.getElementById("days").textContent = days;
 }
 
-class RequestCardWithReports {
-    constructor(requestData) {
-        this.requestId = requestData.request.id;
-        this.housingNeed = requestData.request.housing_need;
-        this.requestStatus = requestData.request.status || `pending`;
-        this.reports = requestData.reports || [];
-    }
-}
-
 function hideById(id, behaivor) {
     const request = document.querySelector(`[data-id="${id}"]`);
     if (!request) return;
     
-    // Если behaivor не указан - красное растворение вниз
     if (behaivor === "rejected" || !behaivor) {
         request.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
         request.style.boxShadow = '0 0 25px red, 0 0 40px  #95082b';
@@ -114,20 +121,19 @@ function hideById(id, behaivor) {
         return;
     }
     request.style.transition = 'all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1)';
-    request.style.transform = 'translateY(-80px) scale(1.05)'; // Легкое увеличение при подъеме
+    request.style.transform = 'translateY(-80px) scale(1.05)';
     request.style.opacity = '0';
     request.style.boxShadow = `
         0 0 20px rgba(252, 227, 0, 0.8),
         0 0 50px rgba(252, 227, 0, 0.5),
         0 0 100px rgba(252, 227, 0, 0.2),
         inset 0 0 20px rgba(255, 255, 200, 0.3)
-    `; // Добавлено внутреннее свечение
+    `;
     request.style.filter = 'blur(1px) brightness(2) contrast(1.2) drop-shadow(0 0 10px #fce300)';
     request.style.background = 'radial-gradient(circle at center, rgba(252, 227, 0, 0.3), rgba(252, 227, 0, 0.1))';
 
     setTimeout(() => {
         request.style.display = 'none';
-        // Восстанавливаем все измененные стили
         request.style.transform = '';
         request.style.opacity = '1';
         request.style.boxShadow = '';
@@ -138,18 +144,6 @@ function hideById(id, behaivor) {
 
 calculateDays();
 setInterval(calculateDays, 60 * 60 * 24 * 1000);
-
-const degrees = {
-    'candidate': 'Кандидат наук',
-    'doctor': 'Доктор наук',
-    'none': 'Отсутствует'
-},
-
-titles = {
-    'docent': 'доцент',
-    'professor': 'профессор',
-    'none': 'Отсутствует'
-};
 
 function parseToRequestWithReports(requestsList) {
     if (!Array.isArray(requestsList)) {

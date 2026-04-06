@@ -234,6 +234,7 @@ async function deleteRequestById(requestId) {
             'withToken': true      
             }
         });
+        
         hideById(requestId);
         return response.ok;
     } catch (error) {

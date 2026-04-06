@@ -2,6 +2,13 @@ function addReportForm(){
     const reportForm = document.querySelector(".form-add-report");
     const clonedForm = reportForm.cloneNode(true)
     
+    const existingClones = document.querySelectorAll('.form-add-report:not(:first-child)');
+    
+    if (existingClones.length > 5) {
+        alert('Максимальное количество форм - 5 ');
+        return;
+    }
+    
     const inputs = clonedForm.querySelectorAll('input','select')
     .forEach(input => {input.value = ''; input.required = true;});
 

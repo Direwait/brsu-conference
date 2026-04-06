@@ -1,4 +1,6 @@
-.form-add-request, .form-add-report, .form-request {
+.form-add-request,
+.form-add-report,
+.form-request {
     display: flex;
     flex-direction: column;
 }
@@ -6,9 +8,11 @@
 .form-add-request {
     width: 55%;
 }
+
 .form-request {
     align-items: center;
 }
+
 button {
     cursor: pointer;
 }
@@ -18,7 +22,7 @@ button {
     flex-direction: column;
     padding-top: 10px;
     background-color: rgba(221, 11, 11, 0.1);
-    border: 2px solid #ccc;
+    border: 2px solid lightgray;
     border-radius: 8px;
     min-width: 240px;
 }
@@ -54,5 +58,5 @@ button {
     background-color: rgb(191, 194, 193);
     min-width: 0px;
     border-radius: 0 0 10px 0px;
-    border: lightgray 2px solid;
+    border: 2px solid lightgray;
 }
