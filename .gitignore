@@ -1,3 +1,6 @@
+# Local certificates
+cert/
+
 # VSCode settings
 .vscode/
 
