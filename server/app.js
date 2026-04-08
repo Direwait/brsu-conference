@@ -22,10 +22,4 @@ app.use('/requests', requestRouter);
 app.use('/users', userRouter);
 app.use(errorHadler);
 
-const options = {
-    key: fs.readFileSync(path.resolve(process.env.KEY)),
-    cert: fs.readFileSync(path.resolve(process.env.CERT))
-}
-
-https.createServer(options, app)
-.listen(process.env.PORT, () => console.log(`server started on port ${process.env.PORT}`));
+app.listen(process.env.PORT, () => console.log(`server started on port ${process.env.PORT}`));
