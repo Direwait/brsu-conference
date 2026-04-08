@@ -1,6 +1,6 @@
 async function logout() {
     try {
-        const response = await fetch('https://conf_server.brsu.by:8888/users/logout', {
+        const response = await fetch('https://brsu-conference.onrender.com/users/logout', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
@@ -21,7 +21,7 @@ async function logout() {
 async function codeOnEmail() {
     try {
         const email = document.getElementById('email').value;
-        const response = await fetch('https://conf_server.brsu.by:8888/users/reset-code', {
+        const response = await fetch('https://brsu-conference.onrender.com/users/reset-code', {
             method: "POST",
             headers: {
                 'content-type': 'application/json',
@@ -45,7 +45,7 @@ async function changePassword() {
         const code = document.getElementById('code').value;
         const password = document.getElementById('newPassword').value;
         
-        const response = await fetch('https://conf_server.brsu.by:8888/users/reset-pass', {
+        const response = await fetch('https://brsu-conference.onrender.com/users/reset-pass', {
             method: "POST",
             headers: {
                 'content-type': 'application/json',
@@ -82,7 +82,7 @@ function login() {
         message.classList.remove('hidden');
         return;
     } 
-    fetch('https://conf_server.brsu.by:8888/users/login', {
+    fetch('https://brsu-conference.onrender.com/users/login', {
         headers: {
             'content-type': 'application/json',
             'withToken': false
@@ -140,7 +140,7 @@ function registration() {
         message.classList.remove('hidden');
         return;
     }
-    fetch('https://conf_server.brsu.by:8888/users/registration', {
+    fetch('https://brsu-conference.onrender.com/users/registration', {
         headers: {
             'content-type': 'application/json',
             'withToken': false
@@ -195,7 +195,7 @@ function registration() {
 async function getAllRequestByUser() {
     try {
         const userId = JSON.parse(decodeURIComponent(atob(localStorage.getItem('conf_data')))).user.id;
-        const response = await fetch(`https://conf_server.brsu.by:8888/requests/get-personal/${userId}`, {
+        const response = await fetch(`https://brsu-conference.onrender.com/requests/get-personal/${userId}`, {
             method: `GET`,
             headers: {
             'content-type': 'application/json',
@@ -211,7 +211,7 @@ async function getAllRequestByUser() {
 
 async function getAllRequestForAdmin(status) {
     try {
-        const response = await fetch(`https://conf_server.brsu.by:8888/requests/get-all/${status}`, {
+        const response = await fetch(`https://brsu-conference.onrender.com/requests/get-all/${status}`, {
             method: `GET`,
             headers: {
             'content-type': 'application/json',
@@ -227,7 +227,7 @@ async function getAllRequestForAdmin(status) {
 
 async function deleteRequestById(requestId) {
     try {
-        const response = await fetch(`https://conf_server.brsu.by:8888/requests/remove/${requestId}`, {
+        const response = await fetch(`https://brsu-conference.onrender.com/requests/remove/${requestId}`, {
             method: `DELETE`,
             headers: {
             'content-type': 'application/json',
