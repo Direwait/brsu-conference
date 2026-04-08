@@ -14,10 +14,19 @@ const db = mysql.createPool({
     enableKeepAlive: true,
     keepAliveInitialDelay: 0
 });
-
+/*
 db.connect(err => {
     if (err) console.log(err.message);
     else console.log('db connected');
+});
+*/
+db.getConnection((err, connection) => {
+    if (err) {
+        console.log('DB connection error:', err.message);
+    } else {
+        console.log('DB connected');
+        connection.release(); // обязательно отпустить соединение
+    }
 });
 
 module.exports = db;
