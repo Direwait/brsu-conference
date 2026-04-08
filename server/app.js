@@ -12,7 +12,7 @@ const fs = require('fs');
 const https = require('https');
 dotenv.config();
 
-app.use(cors({ origin: process.env.ORIGIN, credentials: true }));
+app.use(cors({ origin: [process.env.ORIGIN, "https://direwait.github.io/brsu-conference/"], credentials: true }));
 app.use(cookieParser());
 app.use(express.static('files'));
 app.use(fileUpload({}));
