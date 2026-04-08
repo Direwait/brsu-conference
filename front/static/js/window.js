@@ -19,7 +19,7 @@ window.fetch = async (...args) => {
     if (response.status == 401 && !config.headers.retry)
     {
         try {
-            await fetch('https://conf_server.brsu.by:8888/users/refresh', {
+            await fetch('https://brsu-conference.onrender.com/users/refresh', {
                 headers: { retry: true, 'withToken': false }
             }).then(response => response.json())
             .then(async (data) => {
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () =>  {
         if (!token) return;
         userData = JSON.parse(decodeURIComponent(atob(localStorage.getItem('conf_data'))));
         if (userData.accessToken)
-            await fetch('https://conf_server.brsu.by:8888/users/refresh', {
+            await fetch('https://brsu-conference.onrender.com/users/refresh', {
                 headers: {'withToken': false}
             })
             .then(response => response.json())
