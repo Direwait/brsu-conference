@@ -50,7 +50,7 @@ function addReport() {
         reportData.append(`report${index + 1}`, fileInput.files[0]);
     });
 
-    fetch("https://conf_server.brsu.by:8888/requests/insert", {
+    fetch("https://brsu-conference.onrender.com/requests/insert", {
         method: 'POST',
         credentials: "include",
         headers: {
@@ -70,7 +70,7 @@ function addReport() {
 
 async function updateRequestStatus(requestId, requestStatus) {
     try {
-        const response = await fetch(`https://conf_server.brsu.by:8888/requests/response/${requestId}`, {
+        const response = await fetch(`https://brsu-conference.onrender.com/requests/response/${requestId}`, {
             method: `PUT`,
             headers: {
                 'content-type': 'application/json',
